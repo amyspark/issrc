@@ -1397,8 +1397,7 @@ object WizardForm: TWizardForm
               'polar'
               'slate'
               'stellar'
-              'windows11'
-              'zircon')
+              'windows11')
           end
         end
         object ISPPPage: TNewNotebookPage

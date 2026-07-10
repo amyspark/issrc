@@ -869,9 +869,7 @@ type
     end else if SameText(StyleFileName, 'builtin:slate') then
       StyleName := 'SLATECLASSICO'
     else if SameText(StyleFileName, 'builtin:stellar') then
-      StyleName := 'STELLAR'
-    else if SameText(StyleFileName, 'builtin:zircon') then
-      StyleName := 'ZIRCON';
+      StyleName := 'STELLAR';
     Result := StyleName <> nil;
     if Result then
       Vsf := LoadResourcePointer(M, 'VCLSTYLE', StyleName, True, VsfSize)
@@ -1048,7 +1046,6 @@ begin
             DeleteResource(H, M, 'VCLSTYLE', 'WINDOWSPOLARDARK');
             DeleteResource(H, M, 'VCLSTYLE', 'SLATECLASSICO');
             DeleteResource(H, M, 'VCLSTYLE', 'STELLAR');
-            DeleteResource(H, M, 'VCLSTYLE', 'ZIRCON');
           end;
         end;
 
