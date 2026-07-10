@@ -63,7 +63,8 @@ uses
   uPSC_std in '..\Components\UniPs\Source\uPSC_std.pas',
   uPSC_stdctrls in '..\Components\UniPs\Source\uPSC_stdctrls.pas',
   uPSCompiler in '..\Components\UniPs\Source\uPSCompiler.pas',
-  uPSUtils in '..\Components\UniPs\Source\uPSUtils.pas';
+  uPSUtils in '..\Components\UniPs\Source\uPSUtils.pas',
+  Compression.LZ4 in 'Src\Compression.LZ4.pas';
 
 {$IMAGEBASE $00800000}
 {$SETPEOSVERSION 6.1}

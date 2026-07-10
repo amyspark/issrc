@@ -1,0 +1,7 @@
+compilesettings.bat
+.vs/
+*.user
+islz4/
+Win32/
+x64/
+Arm64EC/

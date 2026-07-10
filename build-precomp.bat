@@ -122,3 +122,14 @@ if errorlevel 1 exit /b 1
 copy %R%\Arm64EC\Release\islzma-ARM64EC.dll Files
 if errorlevel 1 exit /b 1
 exit /b
+
+:copy-islz4
+echo Copying is4 files
+set R=Projects\Src\Compression.LZ4\islz4
+copy %R%\Win32\Release\islz4.dll Files
+if errorlevel 1 exit /b 1
+copy %R%\x64\Release\islz4-x64.dll Files
+if errorlevel 1 exit /b 1
+copy %R%\Arm64EC\Release\islz4-ARM64EC.dll Files
+if errorlevel 1 exit /b 1
+exit /b

@@ -133,7 +133,8 @@ uses
   ISSigFunc.Test in '..\Components\ISSigFunc.Test.pas',
   BidiUtils.Test in '..\Components\BidiUtils.Test.pas',
   Shared.EncryptionFunc.Test in 'Src\Shared.EncryptionFunc.Test.pas',
-  Setup.PathRedir.Test in 'Src\Setup.PathRedir.Test.pas';
+  Setup.PathRedir.Test in 'Src\Setup.PathRedir.Test.pas',
+  Compression.LZ4 in 'Src\Compression.LZ4.pas';
 
 begin
   { Don't remove, see SetupCustomStyle.dpr }

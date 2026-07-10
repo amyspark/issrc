@@ -33,7 +33,7 @@ uses
   SimpleExpression, SHA256, ChaCha20, Shared.SetupTypes, Shared.CommonFunc,
   Shared.Struct, Shared.CompilerInt.Struct, Shared.PreprocInt, Shared.SetupMessageIDs,
   Shared.SetupSectionDirectives, Shared.VerInfoFunc, Shared.DebugStruct,
-  Compiler.ScriptCompiler, Compiler.StringLists, Compression.LZMACompressor,
+  Compiler.ScriptCompiler, Compiler.StringLists, Compression.LZMACompressor, Compression.LZ4,
   Compiler.ExeUpdateFunc;
 
 type
@@ -245,6 +245,7 @@ type
     procedure InitLZMADLL;
     procedure InitPreprocessor;
     procedure InitZipDLL;
+    procedure InitLZ4DLL;
     procedure PopulateLanguageEntryData;
     procedure ProcessMinVersionParameter(const ParamValue: TParamValue;
       var AMinVersion: TSetupVersionData);
@@ -369,7 +370,7 @@ type
   end;
 
 var
-  ZipInitialized, BzipInitialized, LZMAInitialized: Boolean;
+  ZipInitialized, BzipInitialized, LZMAInitialized, LZ4Initialized: Boolean;
   PreprocessorInitialized: Boolean;
   PreprocessScriptProc: TPreprocessScriptProc;
 
@@ -606,6 +607,18 @@ begin
   PreprocessScriptProc := ISPreprocessScript;
 {$ENDIF}
   PreprocessorInitialized := True;
+end;
+
+procedure TSetupCompiler.InitLZ4DLL;
+begin
+  if LZ4Initialized then
+    Exit;
+  const DllName = {$IFDEF WIN64} 'islz4-x64.dll' {$ELSE} 'islz4.dll' {$ENDIF};
+  const Filename = CompilerDir + DllName;
+  const M = LoadCompilerDLL(Filename, [ltloTrustAllOnDebug]);
+  if not LZ4InitCompressFunctions(M) then
+    AbortCompile('Failed to get address of functions in ' + DllName);
+  LZ4Initialized := True;
 end;
 
 procedure TSetupCompiler.InitZipDLL;
@@ -2687,7 +2700,7 @@ var
       'excludelightbuttons', 'excludelightcontrols',
       'hidebevels',
       'includetitlebar',
-      'polar', 'slate', 'stellar', 'windows11', 'zircon'];
+      'polar', 'slate', 'stellar', 'windows11'];
     StylesGroups: array of Integer = [0, 0, 1, 1, 1, 2, 2, 3, 4, 5, 5, 5, 5, 5];
   var
     StylesGroupSeen: array [0..5] of Boolean;
@@ -2931,6 +2944,12 @@ begin
           if not LZMAGetLevel(Copy(Value, 7, Maxint), I) then
             Invalid;
           CompressMethod := cmLZMA2;
+          CompressLevel := I;
+        end
+        else if Copy(Value, 1, 4) = 'lz4/' then begin
+          if not LZ4GetLevel(Copy(Value, 5, Maxint), I) then
+            Invalid;
+          CompressMethod := cmLZ4;
           CompressLevel := I;
         end
         else
@@ -7578,6 +7597,10 @@ var
           cmLZMA2: begin
               Result := TLZMA2Compressor;
             end;
+          cmLZ4: begin
+              InitLZ4DLL;
+              Result := TLZ4Compressor;
+            end;
         else
           AbortCompile('GetCompressorClass: Unknown CompressMethod');
           Result := nil;
@@ -8645,8 +8668,6 @@ begin
           SetupHeader.WizardImageBackColor := $e2d2bc
         else if WizardStyleSpecial = 'stellar' then
           SetupHeader.WizardImageBackColor := $e2c0a7
-        else if WizardStyleSpecial = 'zircon' then
-          SetupHeader.WizardImageBackColor := $eeead0
         else
           SetupHeader.WizardImageBackColor := IfThen(IsForcedDark, $3f3a2e, $f9f3e8); { Also see below }
       end;
