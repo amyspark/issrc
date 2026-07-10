@@ -2257,6 +2257,6 @@ initialization
     SSDV(ssUninstallLogMode, ['append', 'new', 'overwrite']),
     SSDV(ssUseSetupLdr, ['x86', 'x64', SYes, SNo]),
     SSDV(ssWizardImageAlphaFormat, ['none', 'defined', 'premultiplied']),
-    SSDV(ssWizardStyle, ['classic', 'modern', 'light', 'dark', 'dynamic', 'excludelightbuttons', 'excludelightcontrols', 'includetitlebar', 'hidebevels', 'polar', 'slate', 'stellar', 'windows11', 'zircon'])];
+    SSDV(ssWizardStyle, ['classic', 'modern', 'light', 'dark', 'dynamic', 'excludelightbuttons', 'excludelightcontrols', 'includetitlebar', 'hidebevels', 'polar', 'slate', 'stellar', 'windows11'])];
 
 end.

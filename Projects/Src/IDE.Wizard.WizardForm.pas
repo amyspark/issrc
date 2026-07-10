@@ -859,7 +859,7 @@ end;
 
 procedure TWizardForm.WizardStyleComboBoxChange(Sender: TObject);
 begin
-  if (WizardStyleDarkComboBox.Text <> 'light') and ((WizardStyleSubStyleComboBox.Text = 'slate') or (WizardStyleSubStyleComboBox.Text = 'stellar') or (WizardStyleSubStyleComboBox.Text = 'zircon')) then
+  if (WizardStyleDarkComboBox.Text <> 'light') and ((WizardStyleSubStyleComboBox.Text = 'slate') or (WizardStyleSubStyleComboBox.Text = 'stellar')) then
     WizardStyleDarkComboBox.ItemIndex := WizardStyleDarkComboBox.Items.IndexOf('light');
   UpdateWizardStyleImages;
 end;
