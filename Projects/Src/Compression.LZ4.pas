@@ -104,9 +104,9 @@ var
   LZ4F_freeCompressionContext: function(cctx: TLZ4CompressionContext): TLZ4Error; stdcall;
 
   LZ4F_createDecompressionContext: function(out dctx: TLZ4DecompressionContext; version: Cardinal): TLZ4Error; stdcall;
-  LZ4F_decompress: function(var dctx: TLZ4DecompressionContext; dstBuffer: Pointer; var dstSizePtr: UInt64; srcBuffer: Pointer; var srcSizePtr: UInt64; dOptPtr: Pointer): UInt64; stdcall;
-  LZ4F_resetDecompressionContext: procedure(var dctx: TLZ4DecompressionContext); stdcall;
-  LZ4F_freeDecompressionContext: function(var dctx: TLZ4DecompressionContext): TLZ4Error; stdcall;
+  LZ4F_decompress: function(dctx: TLZ4DecompressionContext; dstBuffer: Pointer; var dstSizePtr: UInt64; srcBuffer: Pointer; var srcSizePtr: UInt64; dOptPtr: Pointer): UInt64; stdcall;
+  LZ4F_resetDecompressionContext: procedure(dctx: TLZ4DecompressionContext); stdcall;
+  LZ4F_freeDecompressionContext: function(dctx: TLZ4DecompressionContext): TLZ4Error; stdcall;
 
   LZ4F_isError: function(code: UInt64): Cardinal; stdcall;
   LZ4F_getErrorName: function(code: UInt64): PAnsiChar; stdcall;
