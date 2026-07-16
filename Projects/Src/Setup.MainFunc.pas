@@ -263,7 +263,7 @@ uses
   Shared.FileClass, Setup.LoggingFunc, StringScanner,
   SimpleExpression, Setup.SpawnClient, Setup.SpawnServer,
   Setup.DotNetFunc, Shared.TaskDialogFunc, Setup.MainForm, Compression.SevenZipDecoder,
-  Compression.SevenZipDLLDecoder, Setup.SetupForm;
+{}  Compression.SevenZipDLLDecoder, Setup.SetupForm, Compression.LZ4;
 
 var
   ShellFolders: array[Boolean, TShellFolderID] of String;
@@ -2868,6 +2868,9 @@ var
       cmBzip:
         if not BZInitDecompressFunctions(DecompressorDLLHandle) then
           InternalError('BZInitDecompressFunctions failed');
+{}      cmLZ4:
+        if not LZ4InitDecompressFunctions(DecompressorDLLHandle) then
+          InternalError('LZ4InitDecompressFunctions failed');
     end;
   end;
 
@@ -3525,7 +3528,7 @@ begin
         ReadWizardImages(Reader, WizardBackImages, WantWizardImagesDynamicDark);
         { Decompressor DLL }
         DecompressorDLL := nil;
-        if SetupHeader.CompressMethod in [cmZip, cmBzip] then begin
+{}        if SetupHeader.CompressMethod in [cmZip, cmBzip, cmLZ4] then begin
           DecompressorDLL := TMemoryStream.Create;
           ReadFileIntoStream(Reader, DecompressorDLL);
         end;
@@ -3637,7 +3640,7 @@ begin
   CreateTempInstallDir;
 
   { Save DecompressorDLL stream as "_isdecmp.dll" in TempInstallDir, and load it }
-  if SetupHeader.CompressMethod in [cmZip, cmBzip] then
+{}  if SetupHeader.CompressMethod in [cmZip, cmBzip, cmLZ4] then
     LoadDecompressorDLL;
 
   { Save SevenZipDll stream as "_is7z.dll" in TempInstallDir, and load it }

@@ -74,7 +74,7 @@ type
 
   TCodeParameterKind = (cpkCheck, cpkDirectiveCheck, cpkInstall, cpkOnLog);
 
-  TPrecompiledFile = (pfSetup, pfSetupCustomStyle, pfSetupLdr, pfIs7z, pfIsbunzip, pfIsunzlib, pfIslzma);
+{}  TPrecompiledFile = (pfSetup, pfSetupCustomStyle, pfSetupLdr, pfIs7z, pfIsbunzip, pfIsunzlib, pfIslzma, pfIsLZ4);
   TPrecompiledFiles = set of TPrecompiledFile;
 
   TWizardImages = TObjectList<TCustomMemoryStream>;
@@ -2672,6 +2672,7 @@ var
         4: Include(Result, pfIsbunzip);
         5: Include(Result, pfIsunzlib);
         6: Include(Result, pfIslzma);
+{}        7: Include(Result, pfIsLZ4);
       end;
   end;
 
@@ -7414,7 +7415,7 @@ var
       WriteWizardImages(WizardImagesDynamicDark, W, WizardImages);
       WriteWizardImages(WizardSmallImagesDynamicDark, W, WizardSmallImages);
       WriteWizardImages(WizardBackImagesDynamicDark, W, WizardBackImages);
-      if SetupHeader.CompressMethod in [cmZip, cmBzip] then
+{}      if SetupHeader.CompressMethod in [cmZip, cmBzip, cmLZ4] then
         WriteStream(DecompressorDLL, W);
       if SevenZipDLL <> nil then
         WriteStream(SevenZipDLL, W);
@@ -8959,6 +8960,12 @@ begin
           AddStatus(Format(SCompilerStatusReadingFile, [DllName]));
           DecompressorDLL := CreateMemoryStreamFromFile(CompilerDir + DllName,
             not(pfIsbunzip in DisablePrecompiledFileVerifications), OnCheckedTrust);
+        end;
+{}      cmLZ4: begin
+          const DllName = Format('isLZ4%s.dll', [DllNameExtension]);
+          AddStatus(Format(SCompilerStatusReadingFile, [DllName]));
+          DecompressorDLL := CreateMemoryStreamFromFile(CompilerDir + DllName,
+            not(pfIsLZ4 in DisablePrecompiledFileVerifications), OnCheckedTrust);
         end;
     end;
 
