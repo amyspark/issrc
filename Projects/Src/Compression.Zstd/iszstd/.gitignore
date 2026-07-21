@@ -1,0 +1,6 @@
+compilesettings.bat
+*.user
+iszstd/
+Win32/
+x64/
+Arm64EC/

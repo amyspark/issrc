@@ -122,3 +122,14 @@ if errorlevel 1 exit /b 1
 copy %R%\Arm64EC\Release\islzma-ARM64EC.dll Files
 if errorlevel 1 exit /b 1
 exit /b
+
+:copy-iszstd
+echo Copying iszstd files
+set R=Projects\Src\Compression.Zstd\iszstd
+copy %R%\Win32\Release\iszstd.dll Files
+if errorlevel 1 exit /b 1
+copy %R%\x64\Release\iszstd-x64.dll Files
+if errorlevel 1 exit /b 1
+copy %R%\ARMs64EC\Release\iszstd-Arm64EC.dll Files
+if errorlevel 1 exit /b 1
+exit /b
