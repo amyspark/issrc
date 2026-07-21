@@ -33,7 +33,7 @@ uses
   SimpleExpression, SHA256, ChaCha20, Shared.SetupTypes, Shared.CommonFunc,
   Shared.Struct, Shared.CompilerInt.Struct, Shared.PreprocInt, Shared.SetupMessageIDs,
   Shared.SetupSectionDirectives, Shared.VerInfoFunc, Shared.DebugStruct,
-  Compiler.ScriptCompiler, Compiler.StringLists, Compression.LZMACompressor,
+  Compiler.ScriptCompiler, Compiler.StringLists, Compression.LZMACompressor, Compression.Zstd,
   Compiler.ExeUpdateFunc;
 
 type
@@ -74,7 +74,7 @@ type
 
   TCodeParameterKind = (cpkCheck, cpkDirectiveCheck, cpkInstall, cpkOnLog);
 
-  TPrecompiledFile = (pfSetup, pfSetupCustomStyle, pfSetupLdr, pfIs7z, pfIsbunzip, pfIsunzlib, pfIslzma);
+  TPrecompiledFile = (pfSetup, pfSetupCustomStyle, pfSetupLdr, pfIs7z, pfIsbunzip, pfIsunzlib, pfIslzma, pfIszstd);
   TPrecompiledFiles = set of TPrecompiledFile;
 
   TWizardImages = TObjectList<TCustomMemoryStream>;
@@ -245,6 +245,7 @@ type
     procedure InitLZMADLL;
     procedure InitPreprocessor;
     procedure InitZipDLL;
+    procedure InitZstdDLL;
     procedure PopulateLanguageEntryData;
     procedure ProcessMinVersionParameter(const ParamValue: TParamValue;
       var AMinVersion: TSetupVersionData);
@@ -369,7 +370,7 @@ type
   end;
 
 var
-  ZipInitialized, BzipInitialized, LZMAInitialized: Boolean;
+  ZipInitialized, BzipInitialized, LZMAInitialized, ZstdInitialized: Boolean;
   PreprocessorInitialized: Boolean;
   PreprocessScriptProc: TPreprocessScriptProc;
 
@@ -606,6 +607,18 @@ begin
   PreprocessScriptProc := ISPreprocessScript;
 {$ENDIF}
   PreprocessorInitialized := True;
+end;
+
+procedure TSetupCompiler.InitZstdDLL;
+begin
+  if ZstdInitialized then
+    Exit;
+  const DllName = {$IFDEF WIN64} 'iszstd-x64.dll' {$ELSE} 'iszstd.dll' {$ENDIF};
+  const Filename = CompilerDir + DllName;
+  const M = LoadCompilerDLL(Filename, [ltloTrustAllOnDebug]);
+  if not ZstdInitCompressFunctions(M) then
+    AbortCompile('Failed to get address of functions in ' + DllName);
+  ZstdInitialized := True;
 end;
 
 procedure TSetupCompiler.InitZipDLL;
@@ -2645,7 +2658,7 @@ var
   function StrToPrecompiledFiles(S: String): TPrecompiledFiles;
   const
     PrecompiledFiles: array of PChar = ['setup', 'setupcustomstyle', 'setupldr',
-      'is7z', 'isbunzip', 'isunzlib', 'islzma'];
+      'is7z', 'isbunzip', 'isunzlib', 'islzma', 'iszstd'];
   begin
     Result := [];
     while True do
@@ -2659,6 +2672,7 @@ var
         4: Include(Result, pfIsbunzip);
         5: Include(Result, pfIsunzlib);
         6: Include(Result, pfIslzma);
+        7: Include(Result, pfIszstd);
       end;
   end;
 
@@ -2907,6 +2921,10 @@ begin
           CompressMethod := cmLZMA2;
           CompressLevel := clLZMAMax;
         end
+        else if Value = 'zstd' then begin
+          CompressMethod := cmZstd;
+          CompressLevel := 18;
+        end
         else if Copy(Value, 1, 4) = 'zip/' then begin
           I := StrToIntDef(Copy(Value, 5, Maxint), -1);
           if (I < 1) or (I > 9) then
@@ -2931,6 +2949,13 @@ begin
           if not LZMAGetLevel(Copy(Value, 7, Maxint), I) then
             Invalid;
           CompressMethod := cmLZMA2;
+          CompressLevel := I;
+        end
+        else if Copy(Value, 1, 5) = 'zstd/' then begin
+          I := StrToIntDef(Copy(Value, 6, Maxint), -1);
+          if (I < 1) or (I > 22) then
+            Invalid;
+          CompressMethod := cmZstd;
           CompressLevel := I;
         end
         else
@@ -7395,7 +7420,7 @@ var
       WriteWizardImages(WizardImagesDynamicDark, W, WizardImages);
       WriteWizardImages(WizardSmallImagesDynamicDark, W, WizardSmallImages);
       WriteWizardImages(WizardBackImagesDynamicDark, W, WizardBackImages);
-      if SetupHeader.CompressMethod in [cmZip, cmBzip] then
+      if SetupHeader.CompressMethod in [cmZip, cmBzip, cmZstd] then
         WriteStream(DecompressorDLL, W);
       if SevenZipDLL <> nil then
         WriteStream(SevenZipDLL, W);
@@ -7577,6 +7602,10 @@ var
             end;
           cmLZMA2: begin
               Result := TLZMA2Compressor;
+            end;
+          cmZstd: begin
+              InitZSTDDLL;
+              Result := TZSTDCompressor;
             end;
         else
           AbortCompile('GetCompressorClass: Unknown CompressMethod');
@@ -8938,6 +8967,12 @@ begin
           AddStatus(Format(SCompilerStatusReadingFile, [DllName]));
           DecompressorDLL := CreateMemoryStreamFromFile(CompilerDir + DllName,
             not(pfIsbunzip in DisablePrecompiledFileVerifications), OnCheckedTrust);
+        end;
+      cmZstd: begin
+          const DllName = Format('iszstd%s.dll', [DllNameExtension]);
+          AddStatus(Format(SCompilerStatusReadingFile, [DllName]));
+          DecompressorDLL := CreateMemoryStreamFromFile(CompilerDir + DllName,
+            not(pfIszstd in DisablePrecompiledFileVerifications), OnCheckedTrust);
         end;
     end;
 
