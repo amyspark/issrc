@@ -2658,7 +2658,7 @@ var
   function StrToPrecompiledFiles(S: String): TPrecompiledFiles;
   const
     PrecompiledFiles: array of PChar = ['setup', 'setupcustomstyle', 'setupldr',
-      'is7z', 'isbunzip', 'isunzlib', 'islzma', 'iszstd'];
+      'is7z', 'isbunzip', 'isunzlib', 'islzma', 'isunzstd'];
   begin
     Result := [];
     while True do
@@ -8969,7 +8969,7 @@ begin
             not(pfIsbunzip in DisablePrecompiledFileVerifications), OnCheckedTrust);
         end;
       cmZstd: begin
-          const DllName = Format('iszstd%s.dll', [DllNameExtension]);
+          const DllName = Format('isunzstd%s.dll', [DllNameExtension]);
           AddStatus(Format(SCompilerStatusReadingFile, [DllName]));
           DecompressorDLL := CreateMemoryStreamFromFile(CompilerDir + DllName,
             not(pfIszstd in DisablePrecompiledFileVerifications), OnCheckedTrust);

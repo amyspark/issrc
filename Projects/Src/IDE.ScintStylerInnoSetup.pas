@@ -2250,7 +2250,7 @@ initialization
     SSDV(ssArchiveExtraction, ['auto', 'basic', 'enhanced/nopassword', 'enhanced', 'full']),
     SSDV(ssCloseApplications, ['force', SYes, SNo]),
     SSDV(ssCompression, GetCompressionValues),
-    SSDV(ssDisablePrecompiledFileVerifications, ['setup', 'setupcustomstyle', 'setupldr', 'is7z', 'isbunzip', 'isunzlib', 'islzma', 'iszstd']),
+    SSDV(ssDisablePrecompiledFileVerifications, ['setup', 'setupcustomstyle', 'setupldr', 'is7z', 'isbunzip', 'isunzlib', 'islzma', 'isunzstd']),
     SSDV(ssEncryption, ['full', SYes, SNo]),
     SSDV(ssInternalCompressLevel, ['none'] + LZMALevels), { We don't list 0 }
     SSDV(ssLanguageDetectionMethod, ['uilanguage', 'locale', 'none']),

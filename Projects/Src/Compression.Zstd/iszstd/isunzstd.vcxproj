@@ -94,10 +94,10 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="iszstd.def" />
+    <None Include="isunzstd.def" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{00000000-94D5-4BF9-8A50-7BD9929A0850}</ProjectGuid>
+    <ProjectGuid>{8AA3FEA8-BE91-4840-9FD5-3F2BBC542D52}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>libzstd-dll</RootNamespace>
     <OutDir>$(SolutionDir)bin\$(Platform)_$(Configuration)\</OutDir>
@@ -168,42 +168,42 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <TargetName>iszstd</TargetName>
+    <TargetName>isunzstd</TargetName>
     <IncludePath>$(IncludePath);$(SolutionDir)..\..\..\..\Components\Zstd;$(UniversalCRT_IncludePath);</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ShortProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <TargetName>iszstd-x64</TargetName>
+    <TargetName>isunzstd-x64</TargetName>
     <IncludePath>$(IncludePath);$(SolutionDir)..\..\..\..\Components\Zstd;$(UniversalCRT_IncludePath);</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ShortProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64EC'">
     <LinkIncremental>true</LinkIncremental>
-    <TargetName>iszstd-Arm64EC</TargetName>
+    <TargetName>isunzstd-Arm64EC</TargetName>
     <IncludePath>$(IncludePath);$(SolutionDir)..\..\..\..\Components\Zstd;$(UniversalCRT_IncludePath);</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ShortProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>iszstd</TargetName>
+    <TargetName>isunzstd</TargetName>
     <IncludePath>$(IncludePath);$(SolutionDir)..\..\..\..\Components\Zstd;$(UniversalCRT_IncludePath);</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ShortProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>iszstd-x64</TargetName>
+    <TargetName>isunzstd-x64</TargetName>
     <IncludePath>$(IncludePath);$(SolutionDir)..\..\..\..\Components\Zstd;$(UniversalCRT_IncludePath);</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ShortProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64EC'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>iszstd-Arm64EC</TargetName>
+    <TargetName>isunzstd-Arm64EC</TargetName>
     <IncludePath>$(IncludePath);$(SolutionDir)..\..\..\..\Components\Zstd;$(UniversalCRT_IncludePath);</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ShortProjectName)\$(Platform)\$(Configuration)\</IntDir>
@@ -226,7 +226,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
-      <ModuleDefinitionFile>$(ProjectDir)iszstd.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>$(ProjectDir)isunzstd.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -244,7 +244,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ModuleDefinitionFile>$(ProjectDir)iszstd.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>$(ProjectDir)isunzstd.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64EC'">
@@ -263,7 +263,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ModuleDefinitionFile>$(ProjectDir)iszstd.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>$(ProjectDir)isunzstd.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -285,7 +285,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <TargetMachine>MachineX86</TargetMachine>
-      <ModuleDefinitionFile>$(ProjectDir)iszstd.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>$(ProjectDir)isunzstd.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -307,7 +307,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ModuleDefinitionFile>$(ProjectDir)iszstd.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>$(ProjectDir)isunzstd.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64EC'">
@@ -329,7 +329,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ModuleDefinitionFile>$(ProjectDir)iszstd.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>$(ProjectDir)isunzstd.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

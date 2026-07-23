@@ -49,7 +49,7 @@ set platform=%1
 if "%1"=="x86" set platform=Win32
 if "%1"=="arm64" set platform=Arm64EC
 
-echo - Compiling iszstd
+echo - Compiling is(un)zstd
 msbuild.exe iszstd.sln /t:Clean;Build /p:Configuration=Release;Platform=%platform% /nologo
 if errorlevel 1 goto failed
 
